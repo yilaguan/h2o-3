@@ -12,6 +12,7 @@ def h2o_H2OFrame():
     column_names=None, column_types=None, na_strings=None)
     """
     try:
+        h2o.connect()
         python_lists = [[1,2,3],[4,5,6],["a","b","c"], [1,0,1]]
         col_names=["num1","num2","str1","enum1"]
         dest_frame="newFrame"

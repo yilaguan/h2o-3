@@ -3,23 +3,23 @@ import sys
 sys.path.insert(1,"../../../")
 from tests import pyunit_utils
 import h2o
-from h2o.utils.typechecks import assert_is_type
-from h2o.frame import H2OFrame
+import numpy as np
 
-def h2o_H2OFrame():
+def h2o_H2OFrameAbs():
     """
     Python API test: h2o.frame.H2OFrame.abs()
     """
     try:
         h2o.connect()
-        python_lists = [[-1,2,-3],[-4,-5,-6]]
+        python_lists = np.random.uniform(-1,1, (3,4))
         h2oframe = h2o.H2OFrame(python_obj=python_lists)
         newframe = h2oframe.abs()       # new H2O frame contains only positive elements
-        print("wowo")
+        assert pyunit_utils.assert_corret_frame_operation(h2oframe, newframe, "abs"), \
+            "h2o.H2OFrame.abs() command is not working."
     except Exception as e:
         assert False, "h2o.H2OFrame.abs() command is not working."
 
 if __name__ == "__main__":
-    pyunit_utils.standalone_test(h2o_H2OFrame())
+    pyunit_utils.standalone_test(h2o_H2OFrameAbs())
 else:
-    h2o_H2OFrame()
+    h2o_H2OFrameAbs()
