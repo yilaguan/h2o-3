@@ -2825,7 +2825,8 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
 
     :param h2oFrame: original H2OFrame.
     :param h2oNewFrame: H2OFrame after operation on original H2OFrame is carried out.
-    :param operString: str representing one of 'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh'
+    :param operString: str representing one of 'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
+        'ceil', 'cos', 'cosh', 'cospi'
     :return: None.
     """
     for col_ind in range(h2oFrame.ncols):
@@ -2850,4 +2851,16 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
                     assert False, operString+" command is not working."
             elif (operString == 'atanh'):
                 if abs(h2oNewFrame[row_ind, col_ind]-math.atanh(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'ceil'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.ceil(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'cos'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.cos(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'cosh'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.cosh(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'cospi'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.pi*math.cosh(h2oFrame[row_ind, col_ind])) > 1e-6:
                     assert False, operString+" command is not working."
