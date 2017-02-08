@@ -7,22 +7,21 @@ import numpy as np
 from h2o.utils.typechecks import assert_is_type
 from h2o.frame import H2OFrame
 
-
-def h2o_H2OFrameAcosh():
+def h2o_H2OFrameAsinh():
     """
-    Python API test: h2o.frame.H2OFrame.acosh()
+    Python API test: h2o.frame.H2OFrame.asinh()
     """
     try:
         h2o.connect()
-        python_lists = np.random.uniform(1,3, (3,4))
+        python_lists = np.random.uniform(-1,1, (3,4))
         h2oframe = h2o.H2OFrame(python_obj=python_lists)
-        newframe = h2oframe.acosh()
+        newframe = h2oframe.asinh()
         assert_is_type(newframe, H2OFrame)
-        pyunit_utils.assert_corret_frame_operation(h2oframe, newframe, "acosh")
+        pyunit_utils.assert_corret_frame_operation(h2oframe, newframe, "asinh")
     except Exception as e:
-        assert False, "h2o.H2OFrame.acosh() command is not working."
+        assert False, "h2o.H2OFrame.asinh() command is not working."
 
 if __name__ == "__main__":
-    pyunit_utils.standalone_test(h2o_H2OFrameAcosh())
+    pyunit_utils.standalone_test(h2o_H2OFrameAsinh())
 else:
-    h2o_H2OFrameAcosh()
+    h2o_H2OFrameAsinh()

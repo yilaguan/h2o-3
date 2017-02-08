@@ -2820,24 +2820,34 @@ def cannaryHDFSTest(hdfs_name_node, file_name):
 
 def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
     """
-    This method checks each element of a numeric H2OFrame and return True if the operation specified in
-    operString is carried out correctly on each of them.
+    This method checks each element of a numeric H2OFrame and throw an assert error if its value does not
+    equal to the same operation carried out by python.
 
     :param h2oFrame: original H2OFrame.
     :param h2oNewFrame: H2OFrame after operation on original H2OFrame is carried out.
-    :param operString: str representing one of 'abs', 'acos'.
-    :return: True if all elements of the frame are non-negative and vice versa.
+    :param operString: str representing one of 'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh'
+    :return: None.
     """
     for col_ind in range(h2oFrame.ncols):
         for row_ind in range(h2oFrame.nrows):
             if (operString == 'abs'):
                 if abs(h2oNewFrame[row_ind, col_ind]-abs(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    return False
+                    assert False, operString+" command is not working."
             elif (operString == 'acos'):
                 if abs(h2oNewFrame[row_ind, col_ind]-math.acos(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    return False
+                    assert False, operString+" command is not working."
             elif (operString == 'acosh'):
                 if abs(h2oNewFrame[row_ind, col_ind]-math.acosh(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    return False
-
-    return True
+                    assert False, operString+" command is not working."
+            elif (operString == 'asin'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.asin(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'asinh'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.asinh(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'atan'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.atan(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'atanh'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.atanh(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."

@@ -3,6 +3,8 @@ import sys
 sys.path.insert(1,"../../../")
 import h2o
 from tests import pyunit_utils
+from h2o.utils.typechecks import assert_is_type
+from pandas import DataFrame
 
 def h2o_H2OFrame_as_data_frame():
     """
@@ -14,6 +16,7 @@ def h2o_H2OFrame_as_data_frame():
         h2o.connect()
         smallbike = h2o.import_file(pyunit_utils.locate("smalldata/jira/citibike_head.csv"))
         smallbike_noheader = smallbike.as_data_frame(use_pandas=False, header=False)
+        assert_is_type(smallbike_noheader, DataFrame)
         assert len(smallbike_noheader) == smallbike.nrow
 
         head_small_bike = smallbike.head(rows=5, cols=2)
@@ -24,7 +27,7 @@ def h2o_H2OFrame_as_data_frame():
 
         ##use_pandas = True
         small_bike_pandas = smallbike.as_data_frame(use_pandas=True, header=True)
-        assert small_bike_pandas.__class__.__name__ == "DataFrame"
+        assert_is_type(small_bike_pandas, DataFrame)
         assert small_bike_pandas.shape == (smallbike.nrow, smallbike.ncol)
     except Exception as e:
         assert False, "h2o.H2OFrame.as_data_frame() command is not working."

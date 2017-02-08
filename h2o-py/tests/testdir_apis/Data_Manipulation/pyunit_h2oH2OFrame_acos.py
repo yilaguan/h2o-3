@@ -4,6 +4,9 @@ sys.path.insert(1,"../../../")
 from tests import pyunit_utils
 import h2o
 import numpy as np
+from h2o.utils.typechecks import assert_is_type
+from h2o.frame import H2OFrame
+
 
 def h2o_H2OFrameAcos():
     """
@@ -13,9 +16,9 @@ def h2o_H2OFrameAcos():
         h2o.connect()
         python_lists = np.random.uniform(-1,1, (3,4))
         h2oframe = h2o.H2OFrame(python_obj=python_lists)
-        newframe = h2oframe.acos()       # new H2O frame contains only positive elements
-        assert pyunit_utils.assert_corret_frame_operation(h2oframe, newframe, "acos"), \
-            "h2o.H2OFrame.acos() command is not working."
+        newframe = h2oframe.acos()
+        assert_is_type(newframe, H2OFrame)
+        pyunit_utils.assert_corret_frame_operation(h2oframe, newframe, "acos")
     except Exception as e:
         assert False, "h2o.H2OFrame.acos() command is not working."
 
