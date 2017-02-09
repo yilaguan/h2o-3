@@ -13,16 +13,13 @@ def h2o_H2OFrame_countmatches():
 
     Copied from pyunit_countmatches.py
     """
-    try:
-        h2o.connect()
+    h2o.connect()
 
-        iris_frame = h2o.import_file(path=pyunit_utils.locate("smalldata/iris/iris.csv"),
-                                     col_types=["numeric","numeric","numeric","numeric","string"])
-        result_frame = iris_frame.countmatches(["ic","ri","ca"])
-        assert_is_type(result_frame, H2OFrame)
+    iris_frame = h2o.import_file(path=pyunit_utils.locate("smalldata/iris/iris.csv"),
+                                 col_types=["numeric","numeric","numeric","numeric","string"])
+    result_frame = iris_frame.countmatches(["ic","ri","ca"])
+    assert_is_type(result_frame, H2OFrame)
 
-    except Exception as e:
-        assert False, "h2o.H2OFrame.countmatches() command is not working."
 
 if __name__ == "__main__":
     pyunit_utils.standalone_test(h2o_H2OFrame_countmatches())
