@@ -15,11 +15,21 @@ def h2o_H2OFrame_cummax():
     Copied from pyunit_cumsum_cumprod_cummin_cummax.py
     """
     h2o.connect()
-    python_obj=[list(range(10)), list(range(10))]
-    python_obj_transpose = np.transpose(python_obj)
-    foo = h2o.H2OFrame(python_object=python_obj)
-    foo_transpose =  h2o.H2OFrame(python_object=python_obj_transpose)
-    print("wow")
+    python_object=[list(range(10)), list(range(10))]
+    python_object_transpose = np.transpose(python_object)
+    foo = h2o.H2OFrame(python_obj=python_object)
+    foo_transpose =  h2o.H2OFrame(python_obj=python_object_transpose)
+
+    cummax_col = foo_transpose.cummax()   # default
+    cummax_row = foo.cummax(axis=1)   # row
+
+    # check correct return type
+    assert_is_type(cummax_col, H2OFrame)
+    assert_is_type(cummax_row, H2OFrame)
+
+    # check correct result
+    pyunit_utils.compare_frames(cummax_col, foo_transpose, 0, tol_time=0, tol_numeric=1e-6, strict=False, compare_NA=False)
+    pyunit_utils.compare_frames(cummax_row, foo, 0, tol_time=0, tol_numeric=1e-6, strict=False, compare_NA=False)
 
 if __name__ == "__main__":
     pyunit_utils.standalone_test(h2o_H2OFrame_cummax())
