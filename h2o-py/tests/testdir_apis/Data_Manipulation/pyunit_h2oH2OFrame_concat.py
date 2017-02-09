@@ -8,7 +8,7 @@ from h2o.frame import H2OFrame
 
 def h2o_H2OFrame_concat():
     """
-    Python API test: h2o.frame.H2OFrame.concat()
+    Python API test: h2o.frame.H2OFrame.concat(frames, axis=1)
 
     Copied from pyunit_concat.py
     """

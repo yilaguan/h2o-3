@@ -9,7 +9,7 @@ from h2o.frame import H2OFrame
 
 def h2o_H2OFrame_countmatches():
     """
-    Python API test: h2o.frame.H2OFrame.countmatches()
+    Python API test: h2o.frame.H2OFrame.countmatches(pattern)
 
     Copied from pyunit_countmatches.py
     """

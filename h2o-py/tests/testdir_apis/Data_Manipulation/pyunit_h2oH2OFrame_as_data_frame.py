@@ -8,7 +8,7 @@ from pandas import DataFrame
 
 def h2o_H2OFrame_as_data_frame():
     """
-    Python API test: h2o.frame.H2OFrame.as_data_frame()
+    Python API test: h2o.frame.H2OFrame.as_data_frame(use_pandas=True, header=True)
 
     Copied from pyunit_as_data_frame.py
     """

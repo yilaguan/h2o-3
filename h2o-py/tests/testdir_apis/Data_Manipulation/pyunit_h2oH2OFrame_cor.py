@@ -9,7 +9,7 @@ import numpy as np
 
 def h2o_H2OFrame_cor():
     """
-    Python API test: h2o.frame.H2OFrame.cor(
+    Python API test: h2o.frame.H2OFrame.cor(y=None, na_rm=False, use=None)
     """
     h2o.connect()
 

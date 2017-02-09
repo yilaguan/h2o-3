@@ -8,7 +8,7 @@ from h2o.frame import H2OFrame
 
 def h2o_H2OFrame_apply():
     """
-    Python API test: h2o.frame.H2OFrame.apply()
+    Python API test: h2o.frame.H2OFrame.apply(fun=None, axis=0)
     """
     h2o.connect()
     python_lists = [[1,2,3,4], [1,2,3,4]]

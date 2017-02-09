@@ -12,7 +12,7 @@ from random import randint
 
 def h2o_H2OFrame_as_date():
     """
-    Python API test: h2o.frame.H2OFrame.as_date()
+    Python API test: h2o.frame.H2OFrame.as_date(format)
 
     Copied from pyunit_as_date.py
     """

@@ -2826,7 +2826,7 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
     :param h2oFrame: original H2OFrame.
     :param h2oNewFrame: H2OFrame after operation on original H2OFrame is carried out.
     :param operString: str representing one of 'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
-        'ceil', 'cos', 'cosh', 'cospi'
+        'ceil', 'cos', 'cosh', 'cospi', 'cumprod', 'cumsum'
     :return: None.
     """
     for col_ind in range(h2oFrame.ncols):
@@ -2864,3 +2864,34 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
             elif (operString == 'cospi'):
                 if abs(h2oNewFrame[row_ind, col_ind]-math.pi*math.cosh(h2oFrame[row_ind, col_ind])) > 1e-6:
                     assert False, operString+" command is not working."
+            elif (operString == 'cumprod'):
+                if abs(h2oNewFrame[row_ind, col_ind]-factorial(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'cumsum'):
+                if abs(h2oNewFrame[row_ind, col_ind]-cumsum(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+
+
+def factorial(n):
+    """
+    Defined my own factorial just in case using python2.5 or less.
+
+    :param n:
+    :return:
+    """
+    if n>0 and n<2:
+        return 1
+    if n>=2:
+        return n*factorial(n-1)
+
+def cumsum(n):
+    """
+    Defined my own cumsum
+
+    :param n:
+    :return:
+    """
+    if n>=0 and n<2:
+        return n
+    if n>=2:
+        return n+cumsum(n-1)

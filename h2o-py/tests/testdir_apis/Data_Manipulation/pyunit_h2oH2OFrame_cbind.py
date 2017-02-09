@@ -10,7 +10,7 @@ from h2o.frame import H2OFrame
 
 def h2o_H2OFrame_cbind():
     """
-    Python API test: h2o.frame.H2OFrame.cbind()
+    Python API test: h2o.frame.H2OFrame.cbind(data)
 
     Copied from pyunit_cbind.py
     """

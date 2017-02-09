@@ -10,7 +10,7 @@ from h2o.frame import H2OFrame
 
 def h2o_H2OFrame_cummax():
     """
-    Python API test: h2o.frame.H2OFrame.cummax()
+    Python API test: h2o.frame.H2OFrame.cummax(axis=0)
 
     Copied from pyunit_cumsum_cumprod_cummin_cummax.py
     """

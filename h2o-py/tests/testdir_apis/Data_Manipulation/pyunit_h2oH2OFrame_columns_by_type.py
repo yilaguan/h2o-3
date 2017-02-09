@@ -7,7 +7,7 @@ from h2o.utils.typechecks import assert_is_type
 
 def h2o_H2OFrame_columns_by_type():
     """
-    Python API test: h2o.frame.H2OFrame.columns_by_type()
+    Python API test: h2o.frame.H2OFrame.columns_by_type(coltype='numeric')
 
     Copied from pyunit_colnames_by_type.py
     """
