@@ -38,6 +38,7 @@ import copy
 import json
 import math
 from random import shuffle
+import scipy.special
 
 
 def check_models(model1, model2, use_cross_validation=False, op='e'):
@@ -2826,7 +2827,7 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
     :param h2oFrame: original H2OFrame.
     :param h2oNewFrame: H2OFrame after operation on original H2OFrame is carried out.
     :param operString: str representing one of 'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
-        'ceil', 'cos', 'cosh', 'cospi', 'cumprod', 'cumsum'
+        'ceil', 'cos', 'cosh', 'cospi', 'cumprod', 'cumsum', 'digamma', 'exp', 'expm1'
     :return: None.
     """
     for col_ind in range(h2oFrame.ncols):
@@ -2870,7 +2871,15 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
             elif (operString == 'cumsum'):
                 if abs(h2oNewFrame[row_ind, col_ind]-cumsum(h2oFrame[row_ind, col_ind])) > 1e-6:
                     assert False, operString+" command is not working."
-
+            elif (operString == 'digamma'):
+                if abs(h2oNewFrame[row_ind, col_ind]-scipy.special.polygamma(0, h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'exp'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.exp(h2oFrame[row_ind, col_ind])) > 1e-6:
+                    assert False, operString+" command is not working."
+            elif (operString == 'expm1'):
+                if abs(h2oNewFrame[row_ind, col_ind]-math.exp(h2oFrame[row_ind, col_ind])+1) > 1e-6:
+                    assert False, operString+" command is not working."
 
 def factorial(n):
     """
