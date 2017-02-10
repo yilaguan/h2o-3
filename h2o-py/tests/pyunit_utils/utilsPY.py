@@ -2827,59 +2827,83 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
     :param h2oFrame: original H2OFrame.
     :param h2oNewFrame: H2OFrame after operation on original H2OFrame is carried out.
     :param operString: str representing one of 'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
-        'ceil', 'cos', 'cosh', 'cospi', 'cumprod', 'cumsum', 'digamma', 'exp', 'expm1'
+        'ceil', 'cos', 'cosh', 'cospi', 'cumprod', 'cumsum', 'digamma', 'exp', 'expm1', 'floor'
     :return: None.
     """
+    validStrings = ['acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'ceil', 'cos', 'cosh', 'cospi', 'cumprod',
+                    'cumsum', 'digamma', 'exp', 'floor', 'gamma']
+    result_val = 0.0
+    stringOperations=""
+    if (operString == 'abs'):
+        stringOperations = 'result_val = '+operString+'(h2oFrame[row_ind, col_ind])'
+    elif (operString == 'expm1'):
+        stringOperations = 'result_val = math.'+operString+'(h2oFrame[row_ind, col_ind])-1'
+    elif (operString in validStrings):
+        stringOperations = 'result_val = math.'+operString+'(h2oFrame[row_ind, col_ind])'
+    else:
+        assert False, operString+" is not a valid command."
+
     for col_ind in range(h2oFrame.ncols):
         for row_ind in range(h2oFrame.nrows):
-            if (operString == 'abs'):
-                if abs(h2oNewFrame[row_ind, col_ind]-abs(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'acos'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.acos(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'acosh'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.acosh(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'asin'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.asin(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'asinh'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.asinh(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'atan'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.atan(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'atanh'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.atanh(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'ceil'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.ceil(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'cos'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.cos(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'cosh'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.cosh(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'cospi'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.pi*math.cosh(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'cumprod'):
-                if abs(h2oNewFrame[row_ind, col_ind]-factorial(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'cumsum'):
-                if abs(h2oNewFrame[row_ind, col_ind]-cumsum(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'digamma'):
-                if abs(h2oNewFrame[row_ind, col_ind]-scipy.special.polygamma(0, h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'exp'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.exp(h2oFrame[row_ind, col_ind])) > 1e-6:
-                    assert False, operString+" command is not working."
-            elif (operString == 'expm1'):
-                if abs(h2oNewFrame[row_ind, col_ind]-math.exp(h2oFrame[row_ind, col_ind])+1) > 1e-6:
-                    assert False, operString+" command is not working."
+            exec(stringOperations)
+
+            if abs(h2oNewFrame[row_ind, col_ind]-result_val) > 1e-6:
+                assert False, operString+" command is not working."
+
+            # if (operString == 'abs'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-abs(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'acos'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.acos(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'acosh'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.acosh(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'asin'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.asin(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'asinh'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.asinh(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'atan'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.atan(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'atanh'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.atanh(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'ceil'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.ceil(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'cos'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.cos(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'cosh'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.cosh(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'cospi'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.pi*math.cosh(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'cumprod'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-factorial(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'cumsum'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-cumsum(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'digamma'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-scipy.special.polygamma(0, h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'exp'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.exp(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'expm1'):
+            #         if abs(h2oNewFrame[row_ind, col_ind]-math.exp(h2oFrame[row_ind, col_ind])+1) > 1e-6:
+            #             assert False, operString+" command is not working."
+            # elif (operString == 'floor'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.floor(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
+            # elif (operString == 'gamma'):
+            #     if abs(h2oNewFrame[row_ind, col_ind]-math.gamma(h2oFrame[row_ind, col_ind])) > 1e-6:
+            #         assert False, operString+" command is not working."
 
 def factorial(n):
     """
