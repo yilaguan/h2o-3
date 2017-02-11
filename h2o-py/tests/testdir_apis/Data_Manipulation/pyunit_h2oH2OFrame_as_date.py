@@ -7,7 +7,7 @@ from h2o.utils.typechecks import assert_is_type
 from h2o.frame import H2OFrame
 import time
 import datetime
-from random import randint
+from random import randrange
 
 
 def h2o_H2OFrame_as_date():
@@ -22,7 +22,7 @@ def h2o_H2OFrame_as_date():
     assert_is_type(temp, H2OFrame)
 
     # choose one element from new timestamp frame and compare it with conversion by python.  Should equal.
-    row_ind = randint(0, (temp.nrows-1))
+    row_ind = randrange(0, temp.nrows)
     s = hdf[row_ind,'ds5']
 
     tz = h2o.cluster().timezone     # set python timezone to be the same as H2O timezone

@@ -3,8 +3,6 @@ import sys
 sys.path.insert(1,"../../../")
 import h2o
 from tests import pyunit_utils
-import numpy as np
-from random import randrange
 
 def h2o_H2OFrame_dim():
     """

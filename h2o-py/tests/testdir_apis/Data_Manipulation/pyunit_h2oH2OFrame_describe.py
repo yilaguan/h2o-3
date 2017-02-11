@@ -3,8 +3,6 @@ import sys
 sys.path.insert(1,"../../../")
 from tests import pyunit_utils
 import h2o
-from h2o.utils.typechecks import assert_is_type
-from h2o.frame import H2OFrame
 
 def h2o_H2OFrame_describe():
     """

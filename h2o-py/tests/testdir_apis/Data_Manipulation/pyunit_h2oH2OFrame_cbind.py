@@ -3,7 +3,6 @@ import sys
 sys.path.insert(1,"../../../")
 from tests import pyunit_utils
 import h2o
-import numpy as np
 from h2o.utils.typechecks import assert_is_type
 from h2o.frame import H2OFrame
 
