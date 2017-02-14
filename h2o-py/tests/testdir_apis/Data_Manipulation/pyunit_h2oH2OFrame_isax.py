@@ -3,12 +3,8 @@ import sys
 sys.path.insert(1,"../../../")
 import h2o
 from tests import pyunit_utils
-from random import randrange
 from h2o.frame import H2OFrame
 from h2o.utils.typechecks import assert_is_type
-import numpy as np
-import random
-
 
 def h2o_H2OFrame_isax():
     """

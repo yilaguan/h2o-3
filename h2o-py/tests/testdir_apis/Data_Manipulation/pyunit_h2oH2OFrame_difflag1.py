@@ -16,10 +16,11 @@ def h2o_H2OFrame_difflag1():
     python_object=[list(range(10)), list(range(10))]
     foo = h2o.H2OFrame(python_obj=np.transpose(python_object))
 
-    diffs = foo.difflag1()   # default
+    diffs = foo[0].difflag1()   # default
+    results = diffs==1.0
     # check correct return type
     assert_is_type(diffs, H2OFrame)
-
+    assert results.sum().flatten()==foo.nrow-1, "h2o.H2OFrame.difflag1() command is not working."
     # To-do: check correct result
 
 

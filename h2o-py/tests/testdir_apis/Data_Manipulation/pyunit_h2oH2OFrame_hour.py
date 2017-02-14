@@ -13,10 +13,11 @@ def h2o_H2OFrame_hour():
     Copied from pyunit_count_temps.py
     """
     h2o.connect()
-    crimes = h2o.import_file(path=pyunit_utils.locate("smalldata/chicago/chicagoCrimes10k.csv.zip"),
-                             destination_frame="crimes")
-    crimes_hour = crimes["date"].hour()
-    assert_is_type(crimes_hour, H2OFrame)    # check return type, should be H2OFrame
+    datetime = h2o.import_file(path=pyunit_utils.locate("smalldata/parser/orc/orc2csv/TestOrcFile.testDate2038.csv"))
+    datetime_hour = datetime[0].hour()
+    checkhour = datetime_hour == 12
+    assert_is_type(datetime_hour, H2OFrame)    # check return type, should be H2OFrame
+    assert checkhour.sum().flatten() == datetime.nrows, "h2o.H2OFrame.hour() command is not working."
 
 
 if __name__ == "__main__":

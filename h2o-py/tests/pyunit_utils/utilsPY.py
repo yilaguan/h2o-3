@@ -4,6 +4,7 @@ standard_library.install_aliases()
 from builtins import range
 from past.builtins import basestring
 import sys, os
+import numpy as np
 
 try:        # works with python 2.7 not 3
     from StringIO import StringIO
@@ -2831,15 +2832,20 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
     :return: None.
     """
     validStrings = ['acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'ceil', 'cos', 'cosh', 'cospi', 'cumprod',
-                    'cumsum', 'digamma', 'exp', 'floor', 'gamma']
+                    'cumsum', 'digamma', 'exp', 'floor', 'gamma', 'lgamma', 'log', 'log10']
+    npValidStrings = ['log2']
     result_val = 0.0
-    stringOperations=""
+
     if (operString == 'abs'):
         stringOperations = 'result_val = '+operString+'(h2oFrame[row_ind, col_ind])'
     elif (operString == 'expm1'):
         stringOperations = 'result_val = math.'+operString+'(h2oFrame[row_ind, col_ind])-1'
+    elif (operString == "log1p"):
+        stringOperations = 'result_val=math.log(h2oFrame[row_ind, col_ind]+1)'
     elif (operString in validStrings):
         stringOperations = 'result_val = math.'+operString+'(h2oFrame[row_ind, col_ind])'
+    elif (operString in npValidStrings):
+        stringOperations = 'result_val = np.'+operString+'(h2oFrame[row_ind, col_ind])'
     else:
         assert False, operString+" is not a valid command."
 

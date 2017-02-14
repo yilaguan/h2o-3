@@ -13,10 +13,11 @@ def h2o_H2OFrame_dayOfWeek():
     Copied from pyunit_count_temps.py
     """
     h2o.connect()
-    crimes = h2o.import_file(path=pyunit_utils.locate("smalldata/chicago/chicagoCrimes10k.csv.zip"),
-                             destination_frame="crimes")
-    crimes_day = crimes["date"].dayOfWeek()
-    assert_is_type(crimes_day, H2OFrame)    # check return type, should be H2OFrame
+    datetime = h2o.import_file(path=pyunit_utils.locate("smalldata/parser/orc/orc2csv/TestOrcFile.testDate2038.csv"))
+    datetime_dow = datetime[0].dayOfWeek()
+    checkdow = datetime_dow == 'Wed'
+    assert_is_type(datetime_dow, H2OFrame)    # check return type, should be H2OFrame
+    assert checkdow.any(), "h2o.H2OFrame.dayOfWeek() command is not working."
 
 
 if __name__ == "__main__":

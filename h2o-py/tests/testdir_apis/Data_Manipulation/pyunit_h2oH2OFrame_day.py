@@ -13,11 +13,11 @@ def h2o_H2OFrame_day():
     Copied from pyunit_count_temps.py
     """
     h2o.connect()
-    crimes = h2o.import_file(path=pyunit_utils.locate("smalldata/chicago/chicagoCrimes10k.csv.zip"),
-                             destination_frame="crimes")
-    crimes_day = crimes["date"].day()
-    assert_is_type(crimes_day, H2OFrame)    # check return type, should be H2OFrame
-
+    datetime = h2o.import_file(path=pyunit_utils.locate("smalldata/parser/orc/orc2csv/TestOrcFile.testDate2038.csv"))
+    datetime_day = datetime[0].day()
+    checkday = datetime_day==5
+    assert_is_type(datetime_day, H2OFrame)    # check return type, should be H2OFrame
+    assert checkday.sum().flatten() == datetime.nrows, "h2o.H2OFrame.day() command is not working."
 
 if __name__ == "__main__":
     pyunit_utils.standalone_test(h2o_H2OFrame_day())

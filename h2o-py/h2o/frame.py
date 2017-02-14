@@ -2138,7 +2138,8 @@ class H2OFrame(object):
 
     def countmatches(self, pattern):
         """
-        For each string in the frame, count the occurrences of the provided pattern.
+        For each string in the frame, count the occurrences of the provided pattern.  If countmathces is applied to
+        a frame, all columns of the frame must be type string, otherwise, the returned frame will contain errors.
 
         The pattern here is a plain string, not a regular expression. We will search for the occurrences of the
         pattern as a substring in element of the frame. This function is applicable to frames containing only
@@ -2496,7 +2497,7 @@ class H2OFrame(object):
         """
         Conduct a diff-1 transform on a numeric frame column.
 
-        :returns: an H2OFrame where each element is equal to the corresponding element in the source
+        :returns: a single-column H2OFrame where each element is equal to the corresponding element in the source
             frame minus the previous-row element in the same frame.
         """
         fr = H2OFrame._expr(expr=ExprNode("difflag1", self), cache=self._ex._cache)
