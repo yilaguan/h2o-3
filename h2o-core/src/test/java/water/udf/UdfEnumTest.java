@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  */
 public class UdfEnumTest extends UdfTestBase {
 
-  int requiredCloudSize() { return 1; }
+  int requiredCloudSize() { return 3; }
 
   final String[] domain = {"Red", "White", "Blue"};
   
@@ -106,12 +106,13 @@ public class UdfEnumTest extends UdfTestBase {
 
     final EnumColumn enumColumn = new EnumColumn(vec);
     final UnfoldingFrame<Integer, DataColumn<Integer>> plain = enumColumn.oneHotEncodedFrame("plain");
+    Frame ourEncodedFrame = plain.materialize();
+
     final String[] expectedNames = {"plain.Red", "plain.White", "plain.Blue", "plain.missing(NA)"};
     assertArrayEquals(expectedNames, plain._names);
 
-    Frame ourEncodedFrame = plain.materialize();
     assertArrayEquals(expectedNames, ourEncodedFrame._names);
-
+    
     TrashCan trash = new TrashCan();
     
     Frame utilsFrame = trash.add(new Frame(vec));
@@ -127,5 +128,29 @@ public class UdfEnumTest extends UdfTestBase {
       trash.dump();
     }
   }
-  
+
+
+  @Test
+  public void testEnumsOneHotEncoding() throws Exception {
+    EnumColumn x = generate(100);
+    Vec vec = x.vec();
+
+    Frame ourEncodedFrame = Enums.oneHotEncoding(new Frame(new String[]{"plain"}, new Vec[]{vec}), null);
+
+    TrashCan trash = new TrashCan();
+
+    Frame utilsFrame = trash.add(new Frame(vec));
+    utilsFrame.setNames(new String[]{"plain"});
+
+    FrameUtils.CategoricalOneHotEncoder cohe = new FrameUtils.CategoricalOneHotEncoder(utilsFrame, null);
+    Frame utilsEncodeFrame = trash.add(cohe.exec().get());
+
+    try {
+      assertArrayEquals(utilsEncodeFrame._names, ourEncodedFrame._names);
+      assertTrue(FrameUtils.equal(utilsEncodeFrame, ourEncodedFrame));
+    } finally {
+      trash.dump();
+    }
+  }
+
 }

@@ -85,6 +85,8 @@ public class FrameUtils {
         return dataset; //leave as is - most algos do their own internal default handling of enums
       case OneHotExplicit:
         return new CategoricalOneHotEncoder(dataset, skipCols).exec().get();
+      case OneHot:
+        return new CategoricalOneHotEncoder(dataset, skipCols).exec().get();
       case Binary:
         return new CategoricalBinaryEncoder(dataset, skipCols).exec().get();
       case Eigen:
