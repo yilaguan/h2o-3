@@ -2828,12 +2828,15 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
     :param h2oFrame: original H2OFrame.
     :param h2oNewFrame: H2OFrame after operation on original H2OFrame is carried out.
     :param operString: str representing one of 'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
-        'ceil', 'cos', 'cosh', 'cospi', 'cumprod', 'cumsum', 'digamma', 'exp', 'expm1', 'floor'
+        'ceil', 'cos', 'cosh', 'cospi', 'cumprod', 'cumsum', 'digamma', 'exp', 'expm1', 'floor', 'round',
+        'sin', 'sign', 'round', 'sinh
     :return: None.
     """
-    validStrings = ['acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'ceil', 'cos', 'cosh', 'cospi', 'cumprod',
-                    'cumsum', 'digamma', 'exp', 'floor', 'gamma', 'lgamma', 'log', 'log10']
-    npValidStrings = ['log2']
+    validStrings = ['acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'ceil', 'cos', 'cosh', 'cumprod',
+                    'cumsum', 'digamma', 'exp', 'floor', 'gamma', 'lgamma', 'log', 'log10', 'sin', 'sinh']
+    npValidStrings = ['log2', 'sign']
+    nativeStrings = ['round']
+    multpi = ['cospi', 'sinpi']
     result_val = 0.0
 
     if (operString == 'abs'):
@@ -2842,10 +2845,16 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
         stringOperations = 'result_val = math.'+operString+'(h2oFrame[row_ind, col_ind])-1'
     elif (operString == "log1p"):
         stringOperations = 'result_val=math.log(h2oFrame[row_ind, col_ind]+1)'
+    elif (operString == 'signif'):
+        stringOperations = 'result_val = round(h2oFrame[row_ind, col_ind], 7)'
     elif (operString in validStrings):
         stringOperations = 'result_val = math.'+operString+'(h2oFrame[row_ind, col_ind])'
     elif (operString in npValidStrings):
         stringOperations = 'result_val = np.'+operString+'(h2oFrame[row_ind, col_ind])'
+    elif(operString in nativeStrings):
+        stringOperations = 'result_val = '+operString+'(h2oFrame[row_ind, col_ind])'
+    elif(operString in multpi):
+        stringOperations = 'result_val = math.'+operString.split('p')[0]+'(h2oFrame[row_ind, col_ind]*math.pi)'
     else:
         assert False, operString+" is not a valid command."
 

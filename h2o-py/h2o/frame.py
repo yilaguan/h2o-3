@@ -1100,7 +1100,8 @@ class H2OFrame(object):
 
     def prod(self, na_rm=False):
         """
-        Compute the product of all values in the frame.
+        Compute the product of all values across all rows in a single column H2O frame.  If you apply
+        this command on a multi-column H2O frame, the answer may not be correct.
 
         :param bool na_rm: If True then NAs will be ignored during the computation.
         :returns: product of all values in the frame (a float)
@@ -1843,7 +1844,7 @@ class H2OFrame(object):
 
     def relevel(self, y):
         """
-        Reorder levels of an H2O factor.
+        Reorder levels of an H2O factor for one single column of a H2O frame
 
         The levels of a factor are reordered such that the reference level is at level 0, all remaining levels are
         moved down as needed.
