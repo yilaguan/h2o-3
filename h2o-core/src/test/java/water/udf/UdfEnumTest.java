@@ -1,9 +1,12 @@
 package water.udf;
 
 import org.junit.Test;
+import water.fvec.Frame;
+import water.fvec.Vec;
 import water.udf.fp.Function;
 import water.udf.specialized.EnumColumn;
 import water.udf.specialized.Enums;
+import water.util.FrameUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -83,17 +86,46 @@ public class UdfEnumTest extends UdfTestBase {
         new String[]{"test.Red","test.White","test.Blue","test.missing(NA)"},
         encodedFrame.names());
 
-    List<DataColumn<Integer>> columns = encodedFrame.materialize();
+    MatrixFrame<DataColumn<Integer>> frame = encodedFrame.materialize();
 
       for (int i = 0; i < x.size(); i++) {
       for (int j = 0; j < 3; j++) {
         int expected = (i != 42 && i%3 == j) ? 1 : 0;
-        int actual = columns.get(j).get(i);
+        int actual = frame.column(j).get(i);
         assertEquals("column " + j + ", row " + i, expected, actual);
       }
-      boolean na = columns.get(3).get(i) == 1;
+      boolean na = frame.column(3).get(i) == 1;
       assertEquals(i == 42, na);
     }
   }
 
+  @Test
+  public void testPlainFrameEncodedViaUdf() throws Exception {
+    EnumColumn x = generate(100);
+    Vec vec = x.vec();
+
+    final EnumColumn enumColumn = new EnumColumn(vec);
+    final UnfoldingFrame<Integer, DataColumn<Integer>> plain = enumColumn.oneHotEncodedFrame("plain");
+    final String[] expectedNames = {"plain.Red", "plain.White", "plain.Blue", "plain.missing(NA)"};
+    assertArrayEquals(expectedNames, plain._names);
+
+    Frame ourEncodedFrame = plain.materialize();
+    assertArrayEquals(expectedNames, ourEncodedFrame._names);
+
+    TrashCan trash = new TrashCan();
+    
+    Frame utilsFrame = trash.add(new Frame(vec));
+    utilsFrame.setNames(new String[]{"plain"});
+
+    FrameUtils.CategoricalOneHotEncoder cohe = new FrameUtils.CategoricalOneHotEncoder(utilsFrame, null);
+    Frame utilsEncodeFrame = trash.add(cohe.exec().get());
+    
+    try {
+      assertArrayEquals(utilsEncodeFrame._names, ourEncodedFrame._names);
+      assertTrue(FrameUtils.equal(utilsEncodeFrame, ourEncodedFrame));
+    } finally {
+      trash.dump();
+    }
+  }
+  
 }

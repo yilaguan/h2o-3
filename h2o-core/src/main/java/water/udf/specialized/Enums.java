@@ -43,11 +43,11 @@ public class Enums extends DataColumns.BaseFactory<Integer, EnumColumn> {
   }
 
   public EnumColumn newColumn(long length, final Function<Long, Integer> f) throws IOException {
-    return new TypedFrame.EnumFrame(length, f, domain).newColumn();
+    return new SingleColumnFrame.EnumFrame(length, f, domain).newColumn();
   }
 
   public EnumColumn newColumn(List<Integer> source) throws IOException {
-    return new TypedFrame.EnumFrame(source.size(), Functions.onList(source), domain).newColumn();
+    return new SingleColumnFrame.EnumFrame(source.size(), Functions.onList(source), domain).newColumn();
   }
   
   @Override
@@ -55,7 +55,7 @@ public class Enums extends DataColumns.BaseFactory<Integer, EnumColumn> {
     if (vec.get_type() != Vec.T_CAT)
       throw new IllegalArgumentException("Expected type T_CAT, got " + vec.get_type_str());
     vec.setDomain(domain);
-    return new EnumColumn(vec, this);
+    return new EnumColumn(vec);
   }
 
 }

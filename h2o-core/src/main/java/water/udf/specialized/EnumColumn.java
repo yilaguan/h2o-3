@@ -25,10 +25,14 @@ public class EnumColumn extends Integers.Column {
    */
   public EnumColumn() { domain = null; }
 
-  EnumColumn(Vec v, Enums factory) {
+  private EnumColumn(Vec v, Enums factory) {
     super(v, factory);
     domain = factory.domain;
     assert domain != null && domain.length > 0 : "Need a domain for enums";
+  }
+  
+  public EnumColumn(Vec v) {
+    this(v, Enums.enums(v.domain()));
   }
 
   @Override
