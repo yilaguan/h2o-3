@@ -5,7 +5,6 @@ from tests import pyunit_utils
 import h2o
 import numpy as np
 from h2o.utils.typechecks import assert_is_type
-from h2o.frame import H2OFrame
 
 def h2o_H2OFrame_skewness():
     """
@@ -16,7 +15,7 @@ def h2o_H2OFrame_skewness():
     h2oframe = h2o.H2OFrame(python_obj=python_lists)
     newframe = h2oframe.skewness()
     assert_is_type(newframe, list)
-    pyunit_utils.assert_corret_frame_operation(h2oframe, newframe, "sinpi")
+    assert len(newframe)==2, "h2o.H2OFrame.skewness() command is not working."
 
 if __name__ == "__main__":
     pyunit_utils.standalone_test(h2o_H2OFrame_skewness())

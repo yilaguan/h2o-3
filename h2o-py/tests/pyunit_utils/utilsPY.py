@@ -2833,7 +2833,8 @@ def assert_corret_frame_operation(h2oFrame, h2oNewFrame, operString):
     :return: None.
     """
     validStrings = ['acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'ceil', 'cos', 'cosh', 'cumprod',
-                    'cumsum', 'digamma', 'exp', 'floor', 'gamma', 'lgamma', 'log', 'log10', 'sin', 'sinh']
+                    'cumsum', 'digamma', 'exp', 'floor', 'gamma', 'lgamma', 'log', 'log10', 'sin', 'sinh',
+                    'sqrt']
     npValidStrings = ['log2', 'sign']
     nativeStrings = ['round']
     multpi = ['cospi', 'sinpi']
